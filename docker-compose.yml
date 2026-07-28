@@ -17,6 +17,7 @@ services:
       retries: 10
 
   backend:
+    image: ghcr.io/zornfeuer/site-test-live-backend:latest
     build: ./backend
     environment:
       DATABASE_URL: postgres://demo:demo@db:5432/demo?sslmode=disable
@@ -27,6 +28,7 @@ services:
       - "8090:8080"
 
   frontend:
+    image: ghcr.io/zornfeuer/site-test-live-frontend:latest
     build: ./frontend
     depends_on:
       - backend
