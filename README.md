@@ -75,9 +75,8 @@ Workflow [`.github/workflows/docker-publish.yml`](.github/workflows/docker-publi
 - `ghcr.io/<owner>/<repo>-backend`
 - `ghcr.io/<owner>/<repo>-frontend`
 
-Триггеры: push в `main`, теги `v*.*.*`, а также ручной запуск (`workflow_dispatch`).
-Тегирование образов (через `docker/metadata-action`): имя ветки, semver-тег (для тегов вида `v1.2.3`),
-короткий SHA коммита и `latest` — только для `main`.
+Триггеры: каждый push в `master`, а также ручной запуск (`workflow_dispatch`).
+Образ всегда публикуется под тегом `latest`.
 
 Аутентификация — встроенный `GITHUB_TOKEN`, дополнительных секретов настраивать не нужно.
 После первой публикации пакет в GHCR по умолчанию **приватный** и привязан к репозиторию — если нужен
