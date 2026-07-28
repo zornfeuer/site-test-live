@@ -66,3 +66,26 @@ npm run dev
 | POST   | `/api/notes`      | создать `{ "text": "..." }` |
 | DELETE | `/api/notes/{id}` | удалить заметку        |
 | GET    | `/api/health`     | health-check           |
+
+## CI/CD
+
+Workflow [`.github/workflows/docker-publish.yml`](.github/workflows/docker-publish.yml) собирает образы
+`backend` и `frontend` и публикует их в GitHub Container Registry:
+
+- `ghcr.io/<owner>/<repo>-backend`
+- `ghcr.io/<owner>/<repo>-frontend`
+
+Триггеры: push в `main`, теги `v*.*.*`, а также ручной запуск (`workflow_dispatch`).
+Тегирование образов (через `docker/metadata-action`): имя ветки, semver-тег (для тегов вида `v1.2.3`),
+короткий SHA коммита и `latest` — только для `main`.
+
+Аутентификация — встроенный `GITHUB_TOKEN`, дополнительных секретов настраивать не нужно.
+После первой публикации пакет в GHCR по умолчанию **приватный** и привязан к репозиторию — если нужен
+анонимный `docker pull`, откройте Settings пакета на GitHub и переключите видимость на Public.
+
+Локально запустить сборку так же, как в пайплайне:
+
+```bash
+docker build -t ghcr.io/<owner>/<repo>-backend:local ./backend
+docker build -t ghcr.io/<owner>/<repo>-frontend:local ./frontend
+```
